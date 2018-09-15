@@ -2,6 +2,7 @@ Utilidades AFIP
 ===============
 
 [![Build Status](https://travis-ci.org/lalloni/afip.svg?branch=master)](https://travis-ci.org/lalloni/afip)
+[![codecov](https://codecov.io/gh/lalloni/afip/branch/master/graph/badge.svg)](https://codecov.io/gh/lalloni/afip)
 
 Este proyecto contiene un pequeño conjunto de librerías de código de uso
 frecuente en la interacción con servicios y herramientas de AFIP así como

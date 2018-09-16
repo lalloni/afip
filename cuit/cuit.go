@@ -48,7 +48,7 @@ func validSize(cuit uint64) bool {
 }
 
 func validKind(cuit uint64) bool {
-	cuitk := cuit / 1e9
+	cuitk := (cuit % 1e11) / 1e9
 	valid := false
 	for _, kind := range kinds {
 		if cuitk == kind {
@@ -62,18 +62,23 @@ func validVerifier(cuit uint64) bool {
 	return cuit%10 == verifier(cuit)
 }
 
-// verifier calcula el dígito verificador que correspondería al cuit
-// suministrado devolviendo un número entero de 0 a 10.
-// Si devuelve un entero de 0 a 9 es el verificador correspondiente.
-// Si devuelve un entero igual a 10 el cuit suministrado es incorrecto.
+// verifier calcula y retorna el dígito verificador (un número de 0 a 9) que
+// corresponde al cuit suministrado, si éste es correcto.
+//
+// Esta función ignora el dígito verificador incluido en el cuit suministrado,
+// calculando siempre el valor del mismo utilizando para ello el algoritmo
+// canónico.
+//
+// Esta función puede retornar un número 10 indicando que el CUIT suministrado
+// es incorrecto.
 func verifier(cuit uint64) uint64 {
 	var num uint64
-	rem := cuit / 10 // drop verifier
+	rem := (cuit % 1e11) / 10 // drop out of range and verifier digits
 	for i := 0; rem != 0; i++ {
 		num = num + factor[i%factors]*(rem%10)
 		rem = rem / 10
 	}
-	num = 11 - (num % 11)
+	num = 11 - num%11
 	if num == 11 {
 		return 0
 	}
@@ -97,7 +102,7 @@ func Parse(cuit string) (uint64, error) {
 	kind, _ := strconv.Atoi(match[1])
 	id, _ := strconv.Atoi(match[2])
 	ver, _ := strconv.Atoi(match[3])
-	return uint64(kind*1e9 + id*1e1 + ver), nil
+	return uint64(kind)*1e9 + uint64(id)*1e1 + uint64(ver), nil
 }
 
 // Parts extracts the kind number, identifier number and verifier digit
@@ -105,9 +110,9 @@ func Parse(cuit string) (uint64, error) {
 // return values.
 //
 // This functions discards any decimal digit exceeding the allowed range.
-func Parts(cuit uint64) (kind uint8, id uint32, ver uint8) {
+func Parts(cuit uint64) (kind, id, ver uint64) {
 	clean := cuit % 1e11 // get rid of possible excess digits
-	return uint8(clean / 1e9), uint32((clean % 1e9) / 1e1), uint8(clean % 1e1)
+	return clean / 1e9, (clean % 1e9) / 10, clean % 10
 }
 
 // Format returns a standard formatted string representation of the provided

@@ -82,9 +82,9 @@ func TestParts(t *testing.T) {
 	tests := []struct {
 		name string
 		cuit uint64
-		kind uint8
-		id   uint32
-		ver  uint8
+		kind uint64
+		id   uint64
+		ver  uint64
 	}{
 		{"basic", 10123456781, 10, 12345678, 1},
 		{"zero verifier", 10123456780, 10, 12345678, 0},
@@ -103,9 +103,9 @@ func TestParts(t *testing.T) {
 	f := func(cuit uint64) bool {
 		kind, id, ver := Parts(cuit)
 		c := cuit % 1e11
-		return assert.Equal(t, uint8(c/1e9), kind) &&
-			assert.Equal(t, uint32((c%1e9)/1e1), id) &&
-			assert.Equal(t, uint8(c%1e1), ver)
+		return assert.Equal(t, c/1e9, kind) &&
+			assert.Equal(t, (c%1e9)/10, id) &&
+			assert.Equal(t, c%10, ver)
 	}
 	t.Run("quickchecks", func(t *testing.T) {
 		if err := quick.Check(f, &quick.Config{MaxCount: 1000}); err != nil {
@@ -144,6 +144,9 @@ func TestParse(t *testing.T) {
 		{"one dash", "10-123456781", 10123456781, false},
 		{"too big", "10010-123456781", 0, true},
 		{"bad number", "1a0-12345678-x", 0, true},
+		{"one", "00-00000000-1", 1, false},
+		{"smallest possible", "00-00000000-0", 0, false},
+		{"biggest possible", "99-99999999-9", 99999999999, false},
 		{"anything", "dadaddsa", 0, true},
 	}
 	for _, tt := range tests {

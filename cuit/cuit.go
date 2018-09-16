@@ -23,10 +23,11 @@
 package cuit
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
+
+	"github.com/pkg/errors"
 )
 
 var (
@@ -93,7 +94,7 @@ func verifier(cuit uint64) uint64 {
 func Parse(cuit string) (uint64, error) {
 	match := pattern.FindStringSubmatch(cuit)
 	if match == nil {
-		return 0, errors.New("formato de CUIT/CUIL incorrecto")
+		return 0, errors.Errorf("formato incorrecto de cuit/cuil: %q", cuit)
 	}
 	// the following three errors can never
 	// happen because the regexp pattern

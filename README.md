@@ -12,6 +12,7 @@ Paquetes
 --------
 
 - `github.com/lalloni/afip/cuit` contiene funciones útiles para validar, parsear y formatear CUIT y CUIL. Ver su [documentación](https://godoc.org/github.com/lalloni/afip/cuit) para obtener más detalles.
+- `github.com/lalloni/afip/periodo` contiene funciones útiles para validar, parsear y formatear Períodos Fiscales. Ver su [documentación](https://godoc.org/github.com/lalloni/afip/periodo) para obtener más detalles.
 
 Roadmap
 -------

@@ -37,6 +37,8 @@ var (
 
 var days = []uint{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
 
+const periododesconocido = "tipo período desconocido"
+
 type tipoPeriodo uint8
 
 const (
@@ -69,7 +71,7 @@ func Parse(t tipoPeriodo, v string) (match bool, y, m, d uint) {
 	default:
 		// Nunca debería ocurrir porque los usuarios de la librería no pueden
 		// crear otras instancias de tipoPeriodo porque no se exporta.
-		panic("tipo período desconocido")
+		panic(periododesconocido)
 	}
 }
 

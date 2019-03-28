@@ -61,6 +61,22 @@ func TestParse(t *testing.T) {
 			}
 		})
 	}
+	t.Run("panic con mal tipo", func(t *testing.T) {
+		defer func() {
+			s := recover()
+			if s == nil {
+				t.Error("Parse() expected panic did not occur")
+			} else if s != periododesconocido {
+				t.Errorf("Parse() panic got %q, want %q", s, periododesconocido)
+			}
+		}()
+		Parse(tipoPeriodo(0xff), "20000101") // should panic
+	})
+	t.Run("mal entero", func(t *testing.T) {
+		if ok, _, _, _ := Parse(Diario, "blah"); ok {
+			t.Error("Parse() expected false")
+		}
+	})
 }
 
 func TestComposePeriodoDiario(t *testing.T) {

@@ -29,13 +29,13 @@ var (
 	MinYear uint = 1000
 	// MaxYear establece el año máximo válido
 	MaxYear uint = 9999
-	// MinMonth establece el mes mínimo válido
-	MinMonth uint = 1
-	// MaxMonth establece el mes máximo válido
-	MaxMonth uint = 12
 )
 
-var days = []uint{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+var (
+	days     = []uint{0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+	minMonth = uint(0)
+	maxMonth = uint(len(days) - 1)
+)
 
 const periododesconocido = "tipo período desconocido"
 
@@ -104,17 +104,22 @@ func DecomposePeriodoMensual(p uint) (y, m uint) {
 // Valida que:
 //
 // - El año (y) esté dentro del rango [MinYear, MaxYear] (que por defecto es [1000,9999])
-// - El mes (m) esté dentro del rango [MinMonth, MaxMonth] (que por defecto es [1,12])
-// - El día (d) esté dentro del rango [1, ds] siendo ds el correcto según el mes y año (bisiesto o no)
+// - El mes (m) esté dentro del rango [0,12]
+// - Que el día (d):
+//   - Si m = 0: sea igual a 0
+//   - Si m > 0: esté dentro del rango [0, ds] siendo ds el correcto según el mes y año (considerando años bisiestos)
 func CheckPeriodoDiario(y, m, d uint) bool {
-	if y < MinYear || y > MaxYear || m < MinMonth || m > MaxMonth {
+	if y < MinYear || y > MaxYear || m < minMonth || m > maxMonth {
 		return false
 	}
-	ds := days[m-1]
+	if m == 0 {
+		return d == 0
+	}
+	ds := days[m]
 	if m == 2 && y%4 == 0 {
 		ds = 29
 	}
-	return d >= 1 && d <= ds
+	return d <= ds
 }
 
 // CheckPeriodoDiarioCompound valida que el período compuesto sea correcto.
@@ -128,9 +133,9 @@ func CheckPeriodoDiarioCompound(v uint) bool {
 // Valida que:
 //
 // - El año (y) esté dentro del rango [MinYear, MaxYear] (que por defecto es [1000,9999])
-// - El mes (m) esté dentro del rango [MinMonth, MaxMonth] (que por defecto es [1,12])
+// - El mes (m) esté dentro del rango [0,12]
 func CheckPeriodoMensual(y, m uint) bool {
-	return y >= MinYear && y <= MaxYear && m >= MinMonth && m <= MaxMonth
+	return y >= MinYear && y <= MaxYear && m >= minMonth && m <= maxMonth
 }
 
 // CheckPeriodoMensualCompound valida que el período compuesto sea correcto.

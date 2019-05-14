@@ -186,7 +186,7 @@ func TestFormat(t *testing.T) {
 	}
 }
 
-func ExampleComputeVerifier() {
+func ExampleVerifier() {
 	fmt.Println(Verifier(201111111083123)) // bigger number
 	fmt.Println(Verifier(20111111117))     // incorrect verifier
 	fmt.Println(Verifier(20111111112))     // correct verifier

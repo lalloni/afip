@@ -24,6 +24,7 @@ package cuit
 
 import (
 	"fmt"
+	"math/rand"
 	"testing"
 	"testing/quick"
 
@@ -194,4 +195,22 @@ func ExampleComputeVerifier() {
 	// 2
 	// 2
 	// 6
+}
+
+func ExampleRandom() {
+	notrandom := rand.New(rand.NewSource(1))
+	for i := 0; i < 10; i++ {
+		fmt.Println(Random(notrandom))
+	}
+	// Output:
+	// 34821535516
+	// 23897858592
+	// 34491673208
+	// 27865519562
+	// 30350552576
+	// 30636692871
+	// 30144588370
+	// 23381828735
+	// 20653598999
+	// 20081291390
 }

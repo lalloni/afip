@@ -24,6 +24,7 @@ package cuit
 
 import (
 	"fmt"
+	"math/rand"
 	"regexp"
 	"strconv"
 
@@ -133,4 +134,10 @@ func Parts(cuit uint64) (kind, id, ver uint64) {
 func Format(cuit uint64) string {
 	kind, id, ver := Parts(cuit)
 	return fmt.Sprintf("%02d-%08d-%01d", kind, id, ver)
+}
+
+// Random computes and returns random valid cuit numbers.
+func Random(r *rand.Rand) uint64 {
+	v := (kinds[r.Intn(len(kinds))]*1e8 + r.Uint64()%1e8) * 10
+	return v + uint64(ComputeVerifier(v))
 }

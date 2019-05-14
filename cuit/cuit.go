@@ -63,6 +63,14 @@ func validVerifier(cuit uint64) bool {
 	return cuit%10 == verifier(cuit)
 }
 
+// ComputeVerifier computes and returns the correct verifier digit for the number supplied in the cuit parameter.
+// This function ignores the unit digit from the input value (as it is supposed to be a verifier digit).
+// This function ignores digits past the eleventh (1^11).
+// Please see the examples.
+func ComputeVerifier(cuit uint64) uint8 {
+	return uint8(verifier(cuit))
+}
+
 // verifier calcula y retorna el dígito verificador (un número de 0 a 9) que
 // corresponde al cuit suministrado, si éste es correcto.
 //

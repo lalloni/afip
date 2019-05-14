@@ -183,3 +183,15 @@ func TestFormat(t *testing.T) {
 		})
 	}
 }
+
+func ExampleComputeVerifier() {
+	fmt.Println(ComputeVerifier(201111111083123)) // bigger number
+	fmt.Println(ComputeVerifier(20111111117))     // incorrect verifier
+	fmt.Println(ComputeVerifier(20111111112))     // correct verifier
+	fmt.Println(ComputeVerifier(20236111))        // smaller number
+	// Output:
+	// 8
+	// 2
+	// 2
+	// 6
+}

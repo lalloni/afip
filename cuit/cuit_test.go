@@ -214,3 +214,17 @@ func ExampleRandom() {
 	// 20653598999
 	// 20081291390
 }
+
+func ExampleCompose() {
+	fmt.Println(Compose(20, 12345678, 1))       // basic case
+	fmt.Println(Compose(20, 123456789, 1))      // excess id
+	fmt.Println(Compose(210, 12345678, 1))      // excess kind
+	fmt.Println(Compose(20, 12345678, 12))      // excess verifier
+	fmt.Println(Compose(1234, 123456789, 1234)) // excess all
+	// Output:
+	// 20123456781
+	// 20234567891
+	// 10123456781
+	// 20123456782
+	// 34234567894
+}

@@ -141,3 +141,13 @@ func Random(r *rand.Rand) uint64 {
 	v := (kinds[r.Intn(len(kinds))]*1e8 + r.Uint64()%1e8) * 10
 	return v + uint64(ComputeVerifier(v))
 }
+
+// Compose builds a cuit number from its parts.
+//
+// This function drops the most-significative excess digits of all its input
+// arguments.
+//
+// Please see the examples.
+func Compose(kind, id, ver uint64) uint64 {
+	return (kind%1e2)*1e9 + (id%1e8)*10 + ver%1e1
+}

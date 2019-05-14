@@ -27,6 +27,7 @@ import (
 	"math/rand"
 	"testing"
 	"testing/quick"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -186,10 +187,10 @@ func TestFormat(t *testing.T) {
 }
 
 func ExampleComputeVerifier() {
-	fmt.Println(ComputeVerifier(201111111083123)) // bigger number
-	fmt.Println(ComputeVerifier(20111111117))     // incorrect verifier
-	fmt.Println(ComputeVerifier(20111111112))     // correct verifier
-	fmt.Println(ComputeVerifier(20236111))        // smaller number
+	fmt.Println(Verifier(201111111083123)) // bigger number
+	fmt.Println(Verifier(20111111117))     // incorrect verifier
+	fmt.Println(Verifier(20111111112))     // correct verifier
+	fmt.Println(Verifier(20236111))        // smaller number
 	// Output:
 	// 8
 	// 2
@@ -199,20 +200,39 @@ func ExampleComputeVerifier() {
 
 func ExampleRandom() {
 	notrandom := rand.New(rand.NewSource(1))
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 20; i++ {
 		fmt.Println(Random(notrandom))
 	}
 	// Output:
-	// 34821535516
-	// 23897858592
-	// 34491673208
-	// 27865519562
-	// 30350552576
-	// 30636692871
-	// 30144588370
-	// 23381828735
-	// 20653598999
-	// 20081291390
+	// 24821535510
+	// 27897858598
+	// 24491673202
+	// 20865519568
+	// 24350552576
+	// 34636692877
+	// 27144588369
+	// 30381828731
+	// 24653598994
+	// 27081291395
+	// 20381499562
+	// 30835156377
+	// 27422311098
+	// 27938316509
+	// 20430747798
+	// 24047844432
+	// 23879884594
+	// 34081375471
+	// 27838147157
+	// 20733877805
+}
+
+func TestRandom(t *testing.T) {
+	a := assert.New(t)
+	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	for i := 0; i < 1000000; i++ {
+		cuit := Random(rnd)
+		a.True(IsValid(cuit), "invalid random cuit: %d", cuit)
+	}
 }
 
 func ExampleCompose() {

@@ -61,27 +61,19 @@ func validKind(cuit uint64) bool {
 }
 
 func validVerifier(cuit uint64) bool {
-	return cuit%10 == verifier(cuit)
+	return cuit%10 == Verifier(cuit)
 }
 
-// ComputeVerifier computes and returns the correct verifier digit for the number supplied in the cuit parameter.
-// This function ignores the unit digit from the input value (as it is supposed to be a verifier digit).
-// This function ignores digits past the eleventh (1^11).
-// Please see the examples.
-func ComputeVerifier(cuit uint64) uint8 {
-	return uint8(verifier(cuit))
-}
-
-// verifier calcula y retorna el dígito verificador (un número de 0 a 9) que
-// corresponde al cuit suministrado, si éste es correcto.
+// Verifier computes and returns the correct verifier digit for the
+// number supplied in the cuit parameter.
 //
-// Esta función ignora el dígito verificador incluido en el cuit suministrado,
-// calculando siempre el valor del mismo utilizando para ello el algoritmo
-// canónico.
+// This function ignores the unit digit from the input value (as it is the
+// verifier digit being calculated).
 //
-// Esta función puede retornar un número 10 indicando que el CUIT suministrado
-// es incorrecto.
-func verifier(cuit uint64) uint64 {
+// This function ignores digits past the eleventh (10^11).
+//
+// A return value of 10 means the input cuit number does not exist.
+func Verifier(cuit uint64) uint64 {
 	var num uint64
 	rem := (cuit % 1e11) / 10 // drop out of range and verifier digits
 	for i := 0; rem != 0; i++ {
@@ -136,10 +128,23 @@ func Format(cuit uint64) string {
 	return fmt.Sprintf("%02d-%08d-%01d", kind, id, ver)
 }
 
+var ks = []uint64{20, 24, 27, 30, 34}
+
 // Random computes and returns random valid cuit numbers.
 func Random(r *rand.Rand) uint64 {
-	v := (kinds[r.Intn(len(kinds))]*1e8 + r.Uint64()%1e8) * 10
-	return v + uint64(ComputeVerifier(v))
+	k := ks[r.Intn(len(ks))]
+	id := r.Uint64() % 1e8
+	c := Compose(k, id, 0)
+	v := Verifier(c)
+	if v == 10 {
+		if k < 30 {
+			c = Compose(23, id, 0)
+		} else {
+			c = Compose(33, id, 0)
+		}
+		v = Verifier(c)
+	}
+	return c + uint64(v)
 }
 
 // Compose builds a cuit number from its parts.

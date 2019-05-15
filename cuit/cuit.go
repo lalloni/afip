@@ -56,6 +56,7 @@ func validKind(cuit uint64) bool {
 	for _, kind := range allkinds {
 		if cuitk == kind {
 			valid = true
+			break
 		}
 	}
 	return valid
@@ -78,8 +79,8 @@ func Verifier(cuit uint64) uint64 {
 	var num uint64
 	rem := (cuit % 1e11) / 10 // drop out of range and verifier digits
 	for i := 0; rem != 0; i++ {
-		num = num + factor[i%factors]*(rem%10)
-		rem = rem / 10
+		num += factor[i%factors] * (rem % 10)
+		rem /= 10
 	}
 	num = 11 - num%11
 	if num == 11 {
@@ -143,7 +144,7 @@ func Random(r *rand.Rand) uint64 {
 		}
 		v = Verifier(c)
 	}
-	return c + uint64(v)
+	return c + v
 }
 
 // Compose builds a cuit number from its parts.

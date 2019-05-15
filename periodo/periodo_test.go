@@ -45,20 +45,21 @@ func TestParse(t *testing.T) {
 		{"mal mensual", args{Mensual, "2000"}, false, 0, 0, 0},
 		{"mal mensual mes", args{Mensual, "200014"}, false, 0, 0, 0},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotMatch, gotY, gotM, gotD := Parse(tt.args.t, tt.args.v)
-			if gotMatch != tt.wantMatch {
-				t.Errorf("Parse() gotMatch = %v, want %v", gotMatch, tt.wantMatch)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			gotMatch, gotY, gotM, gotD := Parse(test.args.t, test.args.v)
+			if gotMatch != test.wantMatch {
+				t.Errorf("Parse() gotMatch = %v, want %v", gotMatch, test.wantMatch)
 			}
-			if tt.wantY != 0 && gotY != tt.wantY {
-				t.Errorf("Parse() gotY = %v, want %v", gotY, tt.wantY)
+			if test.wantY != 0 && gotY != test.wantY {
+				t.Errorf("Parse() gotY = %v, want %v", gotY, test.wantY)
 			}
-			if tt.wantM != 0 && gotM != tt.wantM {
-				t.Errorf("Parse() gotM = %v, want %v", gotM, tt.wantM)
+			if test.wantM != 0 && gotM != test.wantM {
+				t.Errorf("Parse() gotM = %v, want %v", gotM, test.wantM)
 			}
-			if tt.wantD != 0 && gotD != tt.wantD {
-				t.Errorf("Parse() gotD = %v, want %v", gotD, tt.wantD)
+			if test.wantD != 0 && gotD != test.wantD {
+				t.Errorf("Parse() gotD = %v, want %v", gotD, test.wantD)
 			}
 		})
 	}
@@ -96,10 +97,11 @@ func TestComposePeriodoDiario(t *testing.T) {
 		{"c", args{0, 0, 0}, 0},
 		{"d", args{9999, 0, 0}, 99990000},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := ComposePeriodoDiario(tt.args.y, tt.args.m, tt.args.d); got != tt.want {
-				t.Errorf("ComposePeriodoDiario() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := ComposePeriodoDiario(test.args.y, test.args.m, test.args.d); got != test.want {
+				t.Errorf("ComposePeriodoDiario() = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -122,17 +124,18 @@ func TestDecomposePeriodoDiario(t *testing.T) {
 		{"d", args{9990101}, 999, 1, 1},
 		{"e", args{10}, 0, 0, 10},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotY, gotM, gotD := DecomposePeriodoDiario(tt.args.p)
-			if gotY != tt.wantY {
-				t.Errorf("DecomposePeriodoDiario() gotY = %v, want %v", gotY, tt.wantY)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			gotY, gotM, gotD := DecomposePeriodoDiario(test.args.p)
+			if gotY != test.wantY {
+				t.Errorf("DecomposePeriodoDiario() gotY = %v, want %v", gotY, test.wantY)
 			}
-			if gotM != tt.wantM {
-				t.Errorf("DecomposePeriodoDiario() gotM = %v, want %v", gotM, tt.wantM)
+			if gotM != test.wantM {
+				t.Errorf("DecomposePeriodoDiario() gotM = %v, want %v", gotM, test.wantM)
 			}
-			if gotD != tt.wantD {
-				t.Errorf("DecomposePeriodoDiario() gotD = %v, want %v", gotD, tt.wantD)
+			if gotD != test.wantD {
+				t.Errorf("DecomposePeriodoDiario() gotD = %v, want %v", gotD, test.wantD)
 			}
 		})
 	}
@@ -155,10 +158,11 @@ func TestComposePeriodoMensual(t *testing.T) {
 		{"e", args{19999, 0}, 1999900},
 		{"f", args{1000, 100}, 100100},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := ComposePeriodoMensual(tt.args.y, tt.args.m); got != tt.want {
-				t.Errorf("ComposePeriodoMensual() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := ComposePeriodoMensual(test.args.y, test.args.m); got != test.want {
+				t.Errorf("ComposePeriodoMensual() = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -180,14 +184,15 @@ func TestDecomposePeriodoMensual(t *testing.T) {
 		{"d", args{99901}, 999, 1},
 		{"e", args{10}, 0, 10},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotY, gotM := DecomposePeriodoMensual(tt.args.p)
-			if gotY != tt.wantY {
-				t.Errorf("DecomposePeriodoMensual() gotY = %v, want %v", gotY, tt.wantY)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			gotY, gotM := DecomposePeriodoMensual(test.args.p)
+			if gotY != test.wantY {
+				t.Errorf("DecomposePeriodoMensual() gotY = %v, want %v", gotY, test.wantY)
 			}
-			if gotM != tt.wantM {
-				t.Errorf("DecomposePeriodoMensual() gotM = %v, want %v", gotM, tt.wantM)
+			if gotM != test.wantM {
+				t.Errorf("DecomposePeriodoMensual() gotM = %v, want %v", gotM, test.wantM)
 			}
 		})
 	}
@@ -229,10 +234,11 @@ func TestCheckPeriodoDiario(t *testing.T) {
 		{"dec has 31 days", args{2000, 12, 31}, true},
 		{"zero", args{0, 0, 0}, false},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CheckPeriodoDiario(tt.args.y, tt.args.m, tt.args.d); got != tt.want {
-				t.Errorf("CheckPeriodoDiario() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := CheckPeriodoDiario(test.args.y, test.args.m, test.args.d); got != test.want {
+				t.Errorf("CheckPeriodoDiario() = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -272,10 +278,11 @@ func TestCheckPeriodoDiarioCompound(t *testing.T) {
 		{"dec has 31 days", args{20001231}, true},
 		{"zero", args{0}, false},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CheckPeriodoDiarioCompound(tt.args.v); got != tt.want {
-				t.Errorf("CheckPeriodoDiarioCompound() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := CheckPeriodoDiarioCompound(test.args.v); got != test.want {
+				t.Errorf("CheckPeriodoDiarioCompound() = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -302,10 +309,11 @@ func TestCheckPeriodoMensual(t *testing.T) {
 		{"month zero", args{2000, 0}, true},
 		{"zero", args{0, 0}, false},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CheckPeriodoMensual(tt.args.y, tt.args.m); got != tt.want {
-				t.Errorf("CheckPeriodoMensual() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := CheckPeriodoMensual(test.args.y, test.args.m); got != test.want {
+				t.Errorf("CheckPeriodoMensual() = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -331,10 +339,11 @@ func TestCheckPeriodoMensualCompound(t *testing.T) {
 		{"month zero", args{200000}, true},
 		{"zero", args{0}, false},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CheckPeriodoMensualCompound(tt.args.v); got != tt.want {
-				t.Errorf("CheckPeriodoMensualCompound() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := CheckPeriodoMensualCompound(test.args.v); got != test.want {
+				t.Errorf("CheckPeriodoMensualCompound() = %v, want %v", got, test.want)
 			}
 		})
 	}
@@ -358,10 +367,11 @@ func TestCheckPeriodoAnual(t *testing.T) {
 		{"too small 2", args{9}, false},
 		{"zero", args{0}, false},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CheckPeriodoAnual(tt.args.y); got != tt.want {
-				t.Errorf("CheckPeriodoAnual() = %v, want %v", got, tt.want)
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			if got := CheckPeriodoAnual(test.args.y); got != test.want {
+				t.Errorf("CheckPeriodoAnual() = %v, want %v", got, test.want)
 			}
 		})
 	}

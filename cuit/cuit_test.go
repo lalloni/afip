@@ -62,6 +62,7 @@ func TestIsValid(t *testing.T) {
 		{"invalid range small", 100, false},
 	}
 	for _, test := range tests {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
 			assert.Equal(t, test.want, IsValid(test.cuit))
 		})
@@ -95,6 +96,7 @@ func TestParts(t *testing.T) {
 		{"big zero", 1e18, 0, 0, 0},
 	}
 	for _, test := range tests {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
 			kind, id, ver := Parts(test.cuit)
 			assert.Equal(t, test.kind, kind)
@@ -151,13 +153,14 @@ func TestParse(t *testing.T) {
 		{"biggest possible", "99-99999999-9", 99999999999, false},
 		{"anything", "dadaddsa", 0, true},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := Parse(tt.cuit)
-			if tt.wantErr {
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			got, err := Parse(test.cuit)
+			if test.wantErr {
 				assert.Error(t, err)
 			}
-			assert.Equal(t, tt.want, got)
+			assert.Equal(t, test.want, got)
 		})
 	}
 }
@@ -167,6 +170,7 @@ func ExampleFormat() {
 	fmt.Println(s)
 	// Output: 20-12345678-1
 }
+
 func TestFormat(t *testing.T) {
 	tests := []struct {
 		name string
@@ -179,9 +183,10 @@ func TestFormat(t *testing.T) {
 		{"more padding", 1000000781, "01-00000078-1"},
 		{"big", 10030123456781, "30-12345678-1"},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, Format(tt.cuit))
+	for _, test := range tests {
+		test := test
+		t.Run(test.name, func(t *testing.T) {
+			assert.Equal(t, test.want, Format(test.cuit))
 		})
 	}
 }

@@ -32,10 +32,11 @@ import (
 )
 
 var (
-	kinds   = []uint64{20, 23, 24, 27, 30, 33, 34}
-	factor  = []uint64{2, 3, 4, 5, 6, 7}
-	factors = len(factor)
-	pattern = regexp.MustCompile(`^(\d{2})-?(\d{8})-?(\d{1})$`)
+	legkinds = []uint64{20, 24, 27, 30, 34}
+	allkinds = []uint64{20, 23, 24, 27, 30, 33, 34}
+	factor   = []uint64{2, 3, 4, 5, 6, 7}
+	factors  = len(factor)
+	pattern  = regexp.MustCompile(`^(\d{2})-?(\d{8})-?(\d{1})$`)
 )
 
 // IsValid checks the provided CUIT/CUIL number for validity considering
@@ -52,7 +53,7 @@ func validSize(cuit uint64) bool {
 func validKind(cuit uint64) bool {
 	cuitk := (cuit % 1e11) / 1e9
 	valid := false
-	for _, kind := range kinds {
+	for _, kind := range allkinds {
 		if cuitk == kind {
 			valid = true
 		}
@@ -128,11 +129,9 @@ func Format(cuit uint64) string {
 	return fmt.Sprintf("%02d-%08d-%01d", kind, id, ver)
 }
 
-var ks = []uint64{20, 24, 27, 30, 34}
-
 // Random computes and returns random valid cuit numbers.
 func Random(r *rand.Rand) uint64 {
-	k := ks[r.Intn(len(ks))]
+	k := legkinds[r.Intn(len(legkinds))]
 	id := r.Uint64() % 1e8
 	c := Compose(k, id, 0)
 	v := Verifier(c)

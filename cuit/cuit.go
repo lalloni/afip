@@ -165,7 +165,8 @@ func Compose(kind, id, ver uint64) uint64 {
 	return (kind%1e2)*1e9 + (id%1e8)*10 + ver%1e1
 }
 
-// Pred returns cuit's predecessor unless cuit equals Min in which case it returns Min or cuit is not valid in which case it returns 0.
+// Pred returns predecessor of cuit unless cuit equals Min in which
+// case it returns Min or cuit is not valid in which case it returns 0.
 func Pred(cuit uint64) uint64 {
 	if !IsValid(cuit) {
 		return 0
@@ -184,7 +185,8 @@ func Pred(cuit uint64) uint64 {
 	}
 }
 
-// Succ returns cuit's successor unless cuit equals Max in which case it returns Max or cuit is not valid in which case it returns 0.
+// Succ returns the successor of cuit unless cuit equals Max in which
+// case it returns Max or cuit is not valid in which case it returns 0.
 func Succ(cuit uint64) uint64 {
 	if !IsValid(cuit) {
 		return 0

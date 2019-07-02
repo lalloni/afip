@@ -253,3 +253,31 @@ func ExampleCompose() {
 	// 20123456782
 	// 34234567894
 }
+
+func ExampleSucc() {
+	for _, cuit := range []uint64{
+		20000000001,
+		20242643772,
+		34999999990,
+	} {
+		fmt.Println(Succ(cuit))
+	}
+	// Output:
+	// 20000000028
+	// 20242643780
+	// 34999999990
+}
+
+func ExamplePred() {
+	for _, cuit := range []uint64{
+		20000000001,
+		20242643772,
+		34999999990,
+	} {
+		fmt.Println(Pred(cuit))
+	}
+	// Output:
+	// 20000000001
+	// 20242643764
+	// 34999999982
+}
